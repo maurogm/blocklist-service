@@ -1,7 +1,6 @@
 import cats.effect.{ExitCode, IO, IOApp}
 import http.BlocklistRoutes
 import interpreters.DummyBlocklistInterpreter
-import models.BlocklistAlg
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.implicits._
 import services.BlocklistService
