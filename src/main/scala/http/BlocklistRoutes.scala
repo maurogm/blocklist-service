@@ -16,11 +16,11 @@ class BlocklistRoutes[F[_] : Sync](blocklistService: BlocklistService[F]) extend
         """.stripMargin
 
   def routes: HttpRoutes[F] = HttpRoutes.of[F] {
-    case GET -> Root / "ips" / ip =>
-      for {
-        isBlocked <- blocklistService.checkIp(ip)
-        response <- Ok(isBlocked.toString)
-      } yield response
+    case GET -> Root / "ips" / input =>
+      blocklistService.checkIp(input).flatMap {
+        case Right(isBlocked) => Ok(isBlocked.toString)
+        case Left(error) => BadRequest(s"Invalid IP address: `$input`, \nerror: \n`$error`")
+      }
 
     case GET -> Root / "health" =>
       Ok("Service is up and running")
