@@ -4,7 +4,8 @@ ThisBuild / scalaVersion := "2.13.8"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "muun-blocklist"
+    name := "muun-blocklist",
+    scalacOptions ++= List("-Ymacro-annotations"), //For @newtype macro
   )
 
 
@@ -16,5 +17,7 @@ libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-dsl" % http4sVersion,
   //"io.circe" %% "circe-generic" % CirceVersion,
   "ch.qos.logback" % "logback-classic" % "1.4.12",
+  "eu.timepit" %% "refined" % "0.10.1",
+  "io.estatico" %% "newtype" % "0.4.4",
   "org.scalatest" %% "scalatest" % "3.2.18" % Test
 )
