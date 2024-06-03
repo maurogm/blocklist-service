@@ -5,7 +5,7 @@ import eu.timepit.refined.string.IPv4
 import io.estatico.newtype.macros.newtype
 
 
-object IPv4 {
+object IPv4Validation {
   private type IPv4String = String Refined IPv4 // strings that compile with IPv4 format
   private object IPv4String extends RefinedTypeOps[IPv4String, String] // adds functionalities to custom IPv4String type, such as `from` method
 

@@ -3,7 +3,7 @@ package services
 import cats.effect.Sync
 import cats.implicits._
 import models.BlocklistAlg
-import models.IPv4.{IPv4Address, validateIPv4Address}
+import models.IPv4Validation.{IPv4Address, validateIPv4Address}
 
 class BlocklistService[F[_] : Sync](blocklist: BlocklistAlg[F]) {
   /**
@@ -20,5 +20,5 @@ class BlocklistService[F[_] : Sync](blocklist: BlocklistAlg[F]) {
     validatedIP.traverse(blocklist.isBlocked)
   }
 
-  def updateBlocklist: F[Unit] = blocklist.updateBlocklist
+  def updateBlocklist: F[Unit] = ???
 }

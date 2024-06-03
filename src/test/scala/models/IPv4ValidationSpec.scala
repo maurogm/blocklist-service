@@ -3,9 +3,9 @@ package models
 import eu.timepit.refined.api.Refined
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import models.IPv4._
+import models.IPv4Validation._
 
-class IPv4Spec extends AnyFlatSpec with Matchers {
+class IPv4ValidationSpec extends AnyFlatSpec with Matchers {
   val validIP1 = "127.0.0.1"
   val validIP2 = "0.0.0.0"
   val validIP3 = "255.255.255.255"
