@@ -5,7 +5,7 @@ import models.IPv4Validation.IPv4Address
 trait BlocklistAlg[F[_]] {
   def identifier: F[Option[String]]
   def isBlocked(ip: IPv4Address): F[Boolean]
-  def updateBlocklist(ips: List[IPv4Address]): F[Unit]
+  def updateBlocklist(ips: List[IPv4Address], newIdentifier: String): F[Unit]
 }
 
 trait SoTFetcher[F[_]] {
