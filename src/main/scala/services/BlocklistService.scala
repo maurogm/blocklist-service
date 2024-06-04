@@ -19,6 +19,4 @@ class BlocklistService[F[_] : Sync](blocklist: BlocklistAlg[F]) {
     val validatedIP: Either[String, IPv4Address] = validateIPv4Address(unsafeStrIP)
     validatedIP.traverse(blocklist.isBlocked)
   }
-
-  def updateBlocklist: F[Unit] = ???
 }
