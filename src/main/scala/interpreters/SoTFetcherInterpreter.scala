@@ -26,14 +26,14 @@ class SoTFetcherInterpreter[F[_] : Async](clientResource: Resource[F, Client[F]]
     }
   }
 
-  override def fetchRemoteList: F[Option[List[IPv4Address]]] = {
+  override def fetchRemoteList: F[Option[Set[IPv4Address]]] = {
     val request = Request[F](Method.GET, url)
     clientResource.use { client =>
       client.run(request).use { response =>
         for {
           rawStrResponse <- response.as[String]
-          strList = rawStrResponse.split("\n").toList
-          maybeAddresses = strList.map(validateIPv4Address)
+          strSet = rawStrResponse.split("\n").toSet
+          maybeAddresses = strSet.map(validateIPv4Address)
           validIPs = maybeAddresses.collect { case Right(value) => value }
         } yield Option(validIPs)
       }

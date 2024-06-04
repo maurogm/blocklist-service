@@ -16,7 +16,7 @@ class DummyBlocklistInterpreter[F[_]: Applicative] extends BlocklistAlg[F] {
   }
 
   // Simulates an update by doing nothing
-  override def updateBlocklist(ips: List[IPv4Address], newIdentifier: String): F[Unit] = {
+  override def updateBlocklist(ips: Set[IPv4Address], newIdentifier: String): F[Unit] = {
     Applicative[F].unit
   }
 }
