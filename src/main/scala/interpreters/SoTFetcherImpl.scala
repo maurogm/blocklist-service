@@ -1,14 +1,14 @@
 import cats.effect.{Async, Sync}
 import cats.syntax.all._
 import models.IPv4Validation.{IPv4Address, validateIPv4Address}
-import models.SoTFetcher
+import models.SoTFetcherAlg
 import org.http4s.client.Client
 import org.http4s.headers.ETag
 import org.http4s.implicits._
 import org.http4s.{Method, Request, Uri}
 
 
-class SoTFetcherImpl[F[_] : Async](client: Client[F], url: Uri) extends SoTFetcher[F] {
+class SoTFetcherImpl[F[_] : Async](client: Client[F], url: Uri) extends SoTFetcherAlg[F] {
   override def getSourceIdentifier: F[Option[String]] = {
     val request = Request[F](Method.HEAD, url)
     client.run(request).use { response =>
