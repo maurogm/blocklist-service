@@ -1,4 +1,6 @@
-import cats.effect.{Async, Sync}
+package interpreters
+
+import cats.effect.{Async, Resource, Sync}
 import cats.syntax.all._
 import models.IPv4Validation.{IPv4Address, validateIPv4Address}
 import models.SoTFetcherAlg
@@ -6,25 +8,37 @@ import org.http4s.client.Client
 import org.http4s.headers.ETag
 import org.http4s.implicits._
 import org.http4s.{Method, Request, Uri}
+import org.typelevel.log4cats.Logger
+import org.typelevel.log4cats.slf4j.Slf4jLogger
 
+class SoTFetcherImpl[F[_] : Async](clientResource: Resource[F, Client[F]], url: Uri) extends SoTFetcherAlg[F] {
+  implicit def logger: Logger[F] = Slf4jLogger.getLogger[F]
 
-class SoTFetcherImpl[F[_] : Async](client: Client[F], url: Uri) extends SoTFetcherAlg[F] {
   override def getSourceIdentifier: F[Option[String]] = {
     val request = Request[F](Method.HEAD, url)
-    client.run(request).use { response =>
-      Sync[F].pure(response.headers.get[ETag].map(_.value))
+    clientResource.use { client =>
+      client.run(request).use { response =>
+        val maybeETag: Option[String] = response.headers.get[ETag].map(_.value)
+        Sync[F].pure(maybeETag)
+      }.handleErrorWith { error =>
+        logger.error(error)(s"Error fetching source identifier: $error") *> Sync[F].pure(None)
+      }
     }
   }
 
-  override def fetchRemoteList: F[List[IPv4Address]] = {
+  override def fetchRemoteList: F[Option[List[IPv4Address]]] = {
     val request = Request[F](Method.GET, url)
-    client.run(request).use { response =>
-      for {
-        rawStrResponse <- response.as[String] //read raw as string
-        strList = rawStrResponse.split("\n").toList //break lines and make a list
-        maybeAddresses = strList.map(s => validateIPv4Address(s)) //validate IPv4 format
-        validIPs = maybeAddresses.collect { case Right(value) => value } //collect only lines that are valid IPs
-      } yield validIPs
+    clientResource.use { client =>
+      client.run(request).use { response =>
+        for {
+          rawStrResponse <- response.as[String]
+          strList = rawStrResponse.split("\n").toList
+          maybeAddresses = strList.map(validateIPv4Address)
+          validIPs = maybeAddresses.collect { case Right(value) => value }
+        } yield Option(validIPs)
+      }
+    }.handleErrorWith { error =>
+      logger.error(error)(s"Error fetching remote list: $error") *> Sync[F].pure(None)
     }
   }
 }

@@ -10,5 +10,5 @@ trait BlocklistAlg[F[_]] {
 
 trait SoTFetcherAlg[F[_]] {
   def getSourceIdentifier: F[Option[String]]
-  def fetchRemoteList: F[List[IPv4Address]]
+  def fetchRemoteList: F[Option[List[IPv4Address]]]
 }

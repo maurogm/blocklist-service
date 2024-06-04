@@ -18,6 +18,8 @@ libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-dsl" % http4sVersion,
   //"io.circe" %% "circe-generic" % CirceVersion,
   //"org.typelevel" %% "cats-effect" % "3.3.0",
+  "org.typelevel" %% "log4cats-core" % "2.1.1",
+  "org.typelevel" %% "log4cats-slf4j" % "2.1.1",
   "ch.qos.logback" % "logback-classic" % "1.4.12",
   "eu.timepit" %% "refined" % "0.10.1",
   "io.estatico" %% "newtype" % "0.4.4",
