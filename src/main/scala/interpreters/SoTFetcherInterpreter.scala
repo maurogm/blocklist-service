@@ -11,7 +11,7 @@ import org.http4s.{Method, Request, Uri}
 import org.typelevel.log4cats.Logger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
 
-class SoTFetcherImpl[F[_] : Async](clientResource: Resource[F, Client[F]], url: Uri) extends SoTFetcherAlg[F] {
+class SoTFetcherInterpreter[F[_] : Async](clientResource: Resource[F, Client[F]], url: Uri) extends SoTFetcherAlg[F] {
   implicit def logger: Logger[F] = Slf4jLogger.getLogger[F]
 
   override def getSourceIdentifier: F[Option[String]] = {

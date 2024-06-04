@@ -3,7 +3,7 @@ import cats.effect.{ExitCode, IO, IOApp, Temporal}
 import cats.syntax.all._
 import config.{AppConfig, ConfigLoader}
 import http.BlocklistRoutes
-import interpreters.{DummyBlocklistInterpreter, SoTFetcherImpl}
+import interpreters.{DummyBlocklistInterpreter, SoTFetcherInterpreter}
 import org.http4s.{HttpApp, Uri}
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
@@ -21,13 +21,13 @@ object Main extends IOApp {
   def run(args: List[String]): IO[ExitCode] = {
 
     val clientResource: Resource[IO, Client[IO]] = BlazeClientBuilder[IO](global)
-      .withRequestTimeout(10.seconds)
+      .withRequestTimeout(5.seconds)
       .resource
 
     for {
       blocklist <- DummyBlocklistInterpreter[IO]
       blocklistService = new BlocklistService(blocklist)
-      sotFetcher = new SoTFetcherImpl[IO](clientResource, sourceUrl)
+      sotFetcher = new SoTFetcherInterpreter[IO](clientResource, sourceUrl)
       synchronizerService = new SynchronizerService(blocklist, sotFetcher)
       httpApp = new BlocklistRoutes(blocklistService).routes.orNotFound
       exitCode <- (runServer(httpApp), runSynchronizer(synchronizerService)).parMapN((_, _) => ExitCode.Success)
