@@ -1,4 +1,17 @@
+#version: '3.8'
 services:
+  app:
+    build: .
+    container_name: blocklist-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    environment:
+      - SOT_URL=https://raw.githubusercontent.com/stamparm/ipsum/master/levels/1.txt
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SYNCHRONIZER_SECONDS_REFRESH=300 # 300 to try to synchronize every 5 minutes
 
   redis:
     restart: always

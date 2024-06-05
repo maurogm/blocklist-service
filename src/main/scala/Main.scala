@@ -40,7 +40,7 @@ object Main extends IOApp {
 
   private def runServer(httpApp: HttpApp[IO]): IO[Unit] =
     BlazeServerBuilder[IO](global)
-      .bindHttp(8080, "localhost")
+      .bindHttp(8080, "0.0.0.0")
       .withHttpApp(httpApp)
       .resource
       .useForever
@@ -50,7 +50,7 @@ object Main extends IOApp {
     val sleepDuration: FiniteDuration = secondsRefresh.seconds
 
     def loop: IO[Unit] = {
-      IO(println("Por sincronizar")) >> synchronizerService.synchronize >> IO(println("Sincronizado!")) >> Temporal[IO].sleep(sleepDuration) >> loop
+      synchronizerService.synchronize >> Temporal[IO].sleep(sleepDuration) >> loop
     }
 
     loop

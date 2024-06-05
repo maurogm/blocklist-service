@@ -4,8 +4,8 @@ import pureconfig._
 import pureconfig.generic.auto._
 
 case class SourceConfig(url: String)
-case class RedisConfig(uri:String, port:String) {
-  def fullUri: String = s"$uri:$port"
+case class RedisConfig(host:String, port:String) {
+  def fullUri: String = s"redis://$host:$port"
 }
 case class SynchronizerConfig(secondsRefresh:Int)
 
