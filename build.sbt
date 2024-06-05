@@ -10,14 +10,14 @@ lazy val root = (project in file("."))
 
 
 val http4sVersion = "1.0.0-M21"
-//val CirceVersion = "0.14.0-M5"
+val redis4catsVersion = "1.1.1"
 libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-blaze-server" % http4sVersion,
   "org.http4s" %% "http4s-blaze-client" % http4sVersion,
   "org.http4s" %% "http4s-circe" % http4sVersion,
   "org.http4s" %% "http4s-dsl" % http4sVersion,
-  //"io.circe" %% "circe-generic" % CirceVersion,
-  //"org.typelevel" %% "cats-effect" % "3.3.0",
+  "dev.profunktor" %% "redis4cats-effects"  % redis4catsVersion,
+  "dev.profunktor" %% "redis4cats-log4cats" % redis4catsVersion,
   "org.typelevel" %% "log4cats-core" % "2.1.1",
   "org.typelevel" %% "log4cats-slf4j" % "2.1.1",
   "ch.qos.logback" % "logback-classic" % "1.4.12",
