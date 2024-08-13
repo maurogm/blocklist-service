@@ -4,7 +4,7 @@ ThisBuild / scalaVersion := "2.13.8"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "muun-blocklist",
+    name := "blocklist-service",
     scalacOptions ++= List("-Ymacro-annotations"), //For @newtype macro
   )
 

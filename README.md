@@ -1,5 +1,16 @@
 # IP Blocklist Service
 
+## About
+
+This project was developed as part of a coding challenge to create a microservice that manages a blocklist of IP addresses.
+The service is designed to identify and block potentially malicious IPs by checking against a regularly updated public list.
+
+The primary focus of this project was to implement a highly available and performant solution.
+The service exposes a RESTful API to determine if a given IP address is on the blocklist.
+
+The implementation utilizes Scala's Http4s framework, with Redis for data persistence and Docker for containerization, ensuring that the service can be easily deployed and scaled.
+Inspiration was drawn from the practices outlined in Gabriel Volpe's book, [Practical FP in Scala](https://leanpub.com/pfp-scala).
+
 ## Overview
 
 The IP Blocklist Service is a Scala-based microservice designed to manage a blocklist of IP addresses.
